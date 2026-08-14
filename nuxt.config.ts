@@ -25,6 +25,28 @@ export default defineNuxtConfig({
     '/': { prerender: true }
   },
 
+  features: {
+    inlineStyles: true
+  },
+
+  icon: {
+    clientBundle: { scan: true }
+  },
+
+  experimental: {
+    payloadExtraction: false
+  },
+
+  hooks: {
+    'build:manifest': (manifest) => {
+      for (const entry of Object.values(manifest)) {
+        entry.preload = false
+        entry.prefetch = false
+        entry.dynamicImports = []
+      }
+    }
+  },
+
   compatibilityDate: '2026-06-30',
 
   eslint: {
