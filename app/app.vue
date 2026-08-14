@@ -28,11 +28,17 @@ useSeoMeta({
   <UApp>
     <UHeader>
       <template #left>
-        <NuxtLink to="/">
-          <AppLogo class="w-auto h-6 shrink-0" />
+        <NuxtLink
+          to="/"
+          aria-label="Nuxt Starter Template, home"
+        >
+          <AppLogo
+            class="w-auto h-6 shrink-0"
+            aria-hidden="true"
+          />
         </NuxtLink>
 
-        <TemplateMenu />
+        <LazyTemplateMenu hydrate-on-interaction />
       </template>
 
       <template #right>
