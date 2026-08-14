@@ -37,15 +37,15 @@ export default defineNuxtConfig({
     payloadExtraction: false
   },
 
-  // hooks: {
-  //   'build:manifest': (manifest) => {
-  //     for (const entry of Object.values(manifest)) {
-  //       entry.preload = false
-  //       entry.prefetch = false
-  //       entry.dynamicImports = []
-  //     }
-  //   }
-  // },
+  hooks: {
+    'build:manifest': (manifest) => {
+      for (const entry of Object.values(manifest)) {
+        entry.preload = false
+        entry.prefetch = false
+        entry.dynamicImports = []
+      }
+    }
+  },
 
   compatibilityDate: '2026-06-30',
 
