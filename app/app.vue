@@ -1,4 +1,6 @@
-<script setup>
+<script setup lang="ts">
+const { site } = useAppConfig()
+
 useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
@@ -7,50 +9,83 @@ useHead({
     { rel: 'icon', href: '/favicon.ico' }
   ],
   htmlAttrs: {
-    lang: 'en'
+    lang: 'en-AU'
   }
 })
 
-const title = 'Nuxt Starter Template'
-const description = 'A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours.'
-
 useSeoMeta({
-  title,
-  description,
-  ogTitle: title,
-  ogDescription: description,
-  ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/starter-light.png',
+  ogSiteName: site.name,
+  ogType: 'website',
   twitterCard: 'summary_large_image'
 })
+
+const navItems = computed(() => [
+  { label: 'Home', to: '/' },
+  {
+    label: 'Services',
+    to: '/services',
+    children: services.map(service => ({
+      label: service.navLabel,
+      description: service.summary,
+      icon: service.icon,
+      to: `/services/${service.slug}`
+    }))
+  },
+  { label: 'About', to: '/about' },
+  { label: 'Contact', to: '/contact' }
+])
+
+const footerLinks = computed(() => [
+  { label: 'Home', to: '/' },
+  { label: 'Services', to: '/services' },
+  ...services.map(service => ({ label: service.navLabel, to: `/services/${service.slug}` })),
+  { label: 'About', to: '/about' },
+  { label: 'Contact', to: '/contact' },
+  { label: 'Privacy policy', to: '/privacy-policy' }
+])
 </script>
 
 <template>
   <UApp>
-    <UHeader>
+    <UHeader :to="'/'">
       <template #left>
         <NuxtLink
           to="/"
-          aria-label="Nuxt Starter Template, home"
+          :aria-label="`${site.name}, home`"
         >
           <AppLogo
             class="w-auto h-6 shrink-0"
             aria-hidden="true"
           />
         </NuxtLink>
-
-        <LazyTemplateMenu hydrate-on-interaction />
       </template>
+
+      <UNavigationMenu :items="navItems" />
 
       <template #right>
         <UColorModeButton />
 
         <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
+          :label="site.phone.display"
+          :to="site.phone.href"
+          icon="i-lucide-phone"
           color="neutral"
           variant="ghost"
+          class="hidden sm:inline-flex"
+        />
+
+        <UButton
+          label="Get a quote"
+          to="/contact"
+          color="primary"
+        />
+      </template>
+
+      <template #content>
+        <UNavigationMenu
+          :items="navItems"
+          orientation="vertical"
+          class="-mx-2.5"
         />
       </template>
     </UHeader>
@@ -59,23 +94,41 @@ useSeoMeta({
       <NuxtPage />
     </UMain>
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" />
-
     <UFooter>
+      <template #top>
+        <UContainer class="py-8">
+          <nav aria-label="Footer">
+            <ul class="flex flex-wrap gap-x-6 gap-y-3">
+              <li
+                v-for="link in footerLinks"
+                :key="link.to"
+              >
+                <ULink
+                  :to="link.to"
+                  class="text-sm text-muted hover:text-default"
+                >
+                  {{ link.label }}
+                </ULink>
+              </li>
+            </ul>
+          </nav>
+        </UContainer>
+      </template>
+
       <template #left>
         <p class="text-sm text-muted">
-          Built with Nuxt UI • © {{ new Date().getFullYear() }}
+          © {{ new Date().getFullYear() }} {{ site.name }}. Demonstration site — not a real business.
         </p>
       </template>
 
       <template #right>
         <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
+          :label="site.phone.display"
+          :to="site.phone.href"
+          icon="i-lucide-phone"
           color="neutral"
           variant="ghost"
+          size="sm"
         />
       </template>
     </UFooter>

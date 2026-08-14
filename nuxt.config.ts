@@ -10,9 +10,9 @@ export default defineNuxtConfig({
       preset: 'cloudflare_module',
       cloudflare: {
         deployConfig: true,
-        wrangler: { name: 'website-seo' },
-      },
-    },
+        wrangler: { name: 'website-seo' }
+      }
+    }
   },
 
   devtools: {
@@ -21,20 +21,26 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  routeRules: {
-    '/': { prerender: true }
-  },
-
   features: {
     inlineStyles: true
   },
 
-  icon: {
-    clientBundle: { scan: true }
-  },
-
   experimental: {
     payloadExtraction: false
+  },
+
+  compatibilityDate: '2026-06-30',
+
+  nitro: {
+    prerender: {
+      routes: ['/'],
+      crawlLinks: true,
+      failOnError: true,
+      // Cloudflare's default asset handling 307s /services -> /services/ when the
+      // file is services/index.html. Emitting services.html serves the extensionless
+      // URL directly, so internal links cost no redirect hop.
+      autoSubfolderIndex: false
+    }
   },
 
   hooks: {
@@ -47,8 +53,6 @@ export default defineNuxtConfig({
     }
   },
 
-  compatibilityDate: '2026-06-30',
-
   eslint: {
     config: {
       stylistic: {
@@ -56,5 +60,9 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
+  },
+
+  icon: {
+    clientBundle: { scan: true }
   }
 })
