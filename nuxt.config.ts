@@ -63,15 +63,16 @@ export default defineNuxtConfig({
     }
   },
 
-  icon: {
-    clientBundle: {
-      scan: true,
-      // The scanner only sees statically-written icon names. These three come from
-      // `:icon="service.icon"`, so without listing them they get fetched from
-      // api.iconify.design at runtime.
-      icons: ['lucide:leaf', 'lucide:scissors', 'lucide:sprout']
-    }
-  },
+  // icon: {
+  //   clientBundle: {
+  //     // Default globInclude omits .ts, so icon names living in content modules
+  //     // (app/utils/services.ts) are missed and fetched from api.iconify.design
+  //     // at runtime instead.
+  //     scan: {
+  //       globInclude: ['**/*.{vue,jsx,tsx,md,mdc,mdx,yml,yaml,ts}']
+  //     }
+  //   }
+  // },
 
   scripts: {
     registry: {
